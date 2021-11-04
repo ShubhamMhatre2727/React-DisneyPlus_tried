@@ -1,12 +1,22 @@
-import React, { useState,  } from 'react'
+import React, { useState, useEffect  } from 'react'
 import styled from 'styled-components'
 import { auth, provider } from '../firebase';
 import {  signInWithPopup, signOut } from "firebase/auth";
 import { useHistory } from 'react-router';
-const Header = (props) => {
-    const [User, setUser] = useState("")
+const Header = () => {
+
+    if (localStorage.getItem("userInfo")===null){
+        localStorage.setItem("userInfo", JSON.stringify(null))
+    }
+
+    const [User, setUser] = useState(JSON.parse(localStorage.getItem("userInfo")))
     const history = useHistory()
-    
+       
+    useEffect(() => {
+        localStorage.setItem("userInfo", JSON.stringify(User))
+        // console.log(localStorage.getItem("userInfo"))
+    }, [User])
+
 
     const handelAuth = () =>{
         if(!User) {
@@ -18,6 +28,7 @@ const Header = (props) => {
                     'email': result.user.email,
                     'photoUrl': result.user.photoURL,
                 });
+
                 history.push("/home")
                 // console.log(User.email)
             }).catch((error) => {
@@ -26,6 +37,7 @@ const Header = (props) => {
         }else if(User) {
             signOut(auth).then(() =>{
                 setUser(null)
+
                 history.push("/")
             })
         }

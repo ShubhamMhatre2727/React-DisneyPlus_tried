@@ -1,12 +1,21 @@
 import React from 'react'
+import { useHistory } from 'react-router';
 import styled from 'styled-components'
 const Login = () => {
+    const history = useHistory()
+
+    const Entrance = () =>{
+        if (JSON.parse(localStorage.getItem("userInfo"))!==null){
+            history.push("/home")
+        }
+    }
+
     return (
         <Container>
             <Content>
                 <CTA>
                     <CTALogoOne src='/images/cta-logo-one.svg' alt=''/>
-                    <SignUp>GET IT  ALL THERE</SignUp>
+                    <SignUp onClick={Entrance}>GET IT  ALL THERE</SignUp>
                     <Description>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ut modi alias provident! Velit rem dicta laborum. Quibusdam ad quis enim ab? Aspernatur a ex quidem est nostrum veritatis laudantium omnis eaque</Description>
                     <CTALogoTwo src='/images/cta-logo-two.png' alt=''/>
                 </CTA>
